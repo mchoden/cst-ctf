@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/" class="back-link">← Back</a><h1>🔑 Authentication Bypass</h1>
+<p class="muted">Five different authentication systems. All broken differently.</p></div>
+<div class="card-grid">
+<div class="card"><a href="/auth/1"><div class="level-num">Level 1</div><h3>Login Page</h3>
+<p>A simple login form. The developer was in a hurry during setup.</p><span class="difficulty diff-easy">Easy</span></a></div>
+<div class="card"><a href="/auth/2"><div class="level-num">Level 2</div><h3>Token Forgery</h3>
+<p>Get a token. Study its structure. Become admin.</p><span class="difficulty diff-hard">Hard</span></a></div>
+<div class="card"><a href="/auth/3"><div class="level-num">Level 3</div><h3>Access Control</h3>
+<p>You can see your own data. What about others?</p><span class="difficulty diff-easy">Easy</span></a></div>
+<div class="card"><a href="/auth/4"><div class="level-num">Level 4</div><h3>Session Analysis</h3>
+<p>Login and examine your session token. Is it random?</p><span class="difficulty diff-medium">Medium</span></a></div>
+<div class="card"><a href="/auth/5"><div class="level-num">Level 5</div><h3>Weak Lock</h3>
+<p>The token is signed. But how strong is the key?</p><span class="difficulty diff-hard">Hard</span></a></div>
+</div>{% endblock %}

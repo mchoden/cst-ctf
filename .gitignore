@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.db
+.env
+INSTRUCTOR_ANSWERS.md
+PRESENTER_SCRIPT.docx
+DEMO_SCRIPT.md
+SETUP_GUIDE.md

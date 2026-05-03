@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/" class="back-link">← Back</a><h1>🌐 CORS Misconfigurations</h1>
+<p class="muted">Three API endpoints. Three different CORS configurations. All broken differently.</p>
+<p class="muted">Use <code>curl</code> in your terminal to examine the response headers.</p></div>
+<div class="card-grid">
+<div class="card"><div class="level-num">Level 1</div><h3>Open Door</h3>
+<p>Endpoint: <code>/cors/api/public-profile</code></p>
+<p>How open is this API?</p><span class="difficulty diff-easy">Easy</span>
+<details class="hint-box"><summary>Hint</summary><p>Use <code>curl -v</code> and look at the response headers. What does the Access-Control-Allow-Origin header say?</p></details></div>
+<div class="card"><div class="level-num">Level 2</div><h3>Pattern Match</h3>
+<p>Endpoint: <code>/cors/api/trusted-profile</code></p>
+<p>The server checks your Origin. But how carefully?</p><span class="difficulty diff-medium">Medium</span>
+<details class="hint-box"><summary>Hint 1</summary><p>The server checks if your Origin matches a pattern. Send different Origin headers and observe which are accepted and which are rejected.</p></details>
+<details class="hint-box"><summary>Hint 2</summary><p>String matching functions can be tricked if the check isn't precise enough. Think about domain names that share the same ending.</p></details></div>
+<div class="card"><div class="level-num">Level 3</div><h3>Mirror Mirror</h3>
+<p>Endpoint: <code>/cors/api/secret-profile</code></p>
+<p>This endpoint requires authentication and has CORS. Both are misconfigured.</p><span class="difficulty diff-hard">Hard</span>
+<details class="hint-box"><summary>Hint 1</summary><p>Send a request without any credentials. Read the error message carefully.</p></details>
+<details class="hint-box"><summary>Hint 2</summary><p>You need two things: proof of identity AND an Origin header. Look at how the server responds to your Origin — does it validate it or just repeat it?</p></details></div>
+</div>{% endblock %}

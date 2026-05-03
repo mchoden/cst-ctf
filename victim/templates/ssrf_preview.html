@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/ssrf" class="back-link">← Back</a><h1>URL Preview Tool</h1>
+<p class="muted">Enter a URL and we'll fetch a preview for you.</p></div>
+<div class="card"><div style="display:flex;gap:8px"><input type="text" id="url" placeholder="https://example.com" style="flex:1"><button class="btn" onclick="preview()">Preview</button></div>
+<div id="result" class="code-block" style="display:none;margin-top:16px;max-height:400px;overflow:auto"></div></div>
+<details class="hint-box"><summary>Hint</summary><p>What addresses can the server reach that your browser can't? Think about what "localhost" means from the server's perspective.</p></details>
+{% endblock %}{% block scripts %}<script>
+async function preview(){const u=document.getElementById('url').value;const r=await fetch('/ssrf/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:u})});const d=await r.json();const e=document.getElementById('result');e.style.display='block';e.textContent=JSON.stringify(d,null,2)}</script>{% endblock %}

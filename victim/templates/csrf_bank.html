@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/csrf" class="back-link">← Back to CSRF Lab</a><h1>Level 1: Bank Transfer</h1>
+<p class="muted">You are logged in as Alice. This form transfers money.</p>
+<p class="muted"><strong>Goal:</strong> Make a transfer of Nu.500+ to "attacker" from outside this page.</p></div>
+<div class="card" style="max-width:400px"><h3>Transfer Money</h3>
+{% if msg %}<div class="success-box">{{ msg }}</div>{% endif %}
+<form method="POST" action="/csrf/bank" style="margin-top:12px">
+<div class="form-group"><label>To</label><input type="text" name="to" placeholder="Recipient"></div>
+<div class="form-group"><label>Amount (Nu.)</label><input type="text" name="amount" placeholder="Amount"></div>
+<button type="submit" class="btn" style="width:100%">Transfer</button></form></div>
+<details class="hint-box"><summary>Hint</summary><p>The flag only appears when the request does NOT come from this page. What tool can send a POST request without a browser?</p></details>
+{% endblock %}

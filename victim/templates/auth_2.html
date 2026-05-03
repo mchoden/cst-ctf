@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/auth" class="back-link">← Back</a><h1>Level 2: Token Forgery</h1>
+<p class="muted">Login as any user. Examine the token. Access the admin endpoint.</p></div>
+<div class="card"><h3>Step 1: Login</h3>
+<p class="muted small">Available accounts: bob/bobsecure!, alice/password123, charlie/charlie456</p>
+<div style="display:flex;gap:8px;margin-top:12px"><input type="text" id="ju" value="bob" style="width:140px"><input type="password" id="jp" value="bobsecure!" style="width:140px"><button class="btn btn-sm" onclick="doLogin()">Login</button></div>
+<div id="jwt-out" class="code-block" style="display:none;margin-top:12px"></div></div>
+<div class="card" style="margin-top:16px"><h3>Step 2: Access Admin</h3>
+<p class="muted small">Endpoint: <code>GET /auth/2/admin</code> with <code>Authorization: Bearer &lt;token&gt;</code></p>
+<div style="display:flex;gap:8px;margin-top:12px"><input type="text" id="jwt-in" placeholder="Your token" style="flex:1"><button class="btn btn-sm" onclick="tryAdmin()">Try Admin</button></div>
+<div id="admin-out" class="code-block" style="display:none;margin-top:12px"></div></div>
+<details class="hint-box"><summary>Hint 1</summary><p>The token has three parts separated by dots. Decode them at jwt.io. What's in the header?</p></details>
+<details class="hint-box"><summary>Hint 2</summary><p>The header specifies an algorithm. Not all algorithms require verification.</p></details>
+{% endblock %}{% block scripts %}<script>
+async function doLogin(){const r=await fetch('/auth/2/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:document.getElementById('ju').value,password:document.getElementById('jp').value})});const d=await r.json();const e=document.getElementById('jwt-out');e.style.display='block';e.textContent=d.token||JSON.stringify(d);if(d.token)document.getElementById('jwt-in').value=d.token}
+async function tryAdmin(){const r=await fetch('/auth/2/admin',{headers:{'Authorization':'Bearer '+document.getElementById('jwt-in').value}});const d=await r.json();const e=document.getElementById('admin-out');e.style.display='block';e.textContent=JSON.stringify(d,null,2)}</script>{% endblock %}

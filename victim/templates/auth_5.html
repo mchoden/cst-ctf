@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/auth" class="back-link">← Back</a><h1>Level 5: Weak Lock</h1>
+<p class="muted">Login as a regular user. The token is signed. Can you forge an admin token?</p></div>
+<div class="card"><h3>Login</h3>
+<p class="muted small">Available accounts: alice/password123, bob/bobsecure!</p>
+<div style="display:flex;gap:8px;margin-top:12px"><input type="text" id="ju" value="alice" style="width:140px"><input type="password" id="jp" value="password123" style="width:140px"><button class="btn btn-sm" onclick="doLogin()">Login</button></div>
+<div id="jout" class="code-block" style="display:none;margin-top:12px"></div></div>
+<div class="card" style="margin-top:16px"><h3>Admin Panel</h3>
+<p class="muted small">API: <code>GET /auth/5/admin-panel</code> with <code>Authorization: Bearer &lt;token&gt;</code></p>
+<div style="display:flex;gap:8px;margin-top:12px"><input type="text" id="forged" placeholder="Your token" style="flex:1"><button class="btn btn-sm" onclick="tryAdmin()">Access Admin</button></div>
+<div id="aout" class="code-block" style="display:none;margin-top:12px"></div></div>
+<details class="hint-box"><summary>Hint 1</summary><p>Decode the token at jwt.io. The payload shows your role. You need to change it — but the signature must be valid.</p></details>
+<details class="hint-box"><summary>Hint 2</summary><p>The signing key is weak. Try common words.</p></details>
+{% endblock %}{% block scripts %}<script>
+async function doLogin(){const r=await fetch('/auth/5/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:document.getElementById('ju').value,password:document.getElementById('jp').value})});const d=await r.json();const e=document.getElementById('jout');e.style.display='block';e.textContent=d.token||JSON.stringify(d);if(d.token)document.getElementById('forged').value=d.token}
+async function tryAdmin(){const r=await fetch('/auth/5/admin-panel',{headers:{'Authorization':'Bearer '+document.getElementById('forged').value}});const d=await r.json();const e=document.getElementById('aout');e.style.display='block';e.textContent=JSON.stringify(d,null,2)}</script>{% endblock %}

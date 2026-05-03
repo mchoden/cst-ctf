@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block content %}
+<div class="hero"><h1>🔓 Security Workshop</h1>
+<p class="muted">19 flags across 6 labs. Find the vulnerabilities. Capture the flags.</p></div>
+<div class="card-grid">
+<div class="card"><a href="/cors"><div class="level-num">CORS • 3 flags</div><h3>Cross-Origin Resource Sharing</h3><p>Misconfigured access controls</p></a></div>
+<div class="card"><a href="/csrf"><div class="level-num">CSRF • 2 flags</div><h3>Cross-Site Request Forgery</h3><p>Forged requests across origins</p></a></div>
+<div class="card"><a href="/auth"><div class="level-num">Auth • 5 flags</div><h3>Authentication Bypass</h3><p>Tokens, sessions, and identity</p></a></div>
+<div class="card"><a href="/api-lab"><div class="level-num">API • 3 flags</div><h3>API Security</h3><p>Discovery, methods, and access</p></a></div>
+<div class="card"><a href="/ssrf"><div class="level-num">SSRF • 3 flags</div><h3>Server-Side Request Forgery</h3><p>Making the server your proxy</p></a></div>
+<div class="card"><a href="/microservices"><div class="level-num">Micro • 3 flags</div><h3>Microservices</h3><p>Service trust and lateral movement</p></a></div>
+</div>
+<div style="text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)">
+<a href="/flags" class="btn btn-green">🚩 Submit a Flag</a></div>{% endblock %}

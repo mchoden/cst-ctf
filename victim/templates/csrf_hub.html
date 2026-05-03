@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/" class="back-link">← Back</a><h1>🔄 CSRF — Cross-Site Request Forgery</h1>
+<p class="muted">Two bank transfer forms. Your goal: make the transfer happen from outside the page.</p>
+<p class="muted">Submitting the form normally won't give you the flag. The attack must come from a different origin.</p></div>
+<div class="card-grid">
+<div class="card"><a href="/csrf/bank"><div class="level-num">Level 1</div><h3>No Protection</h3>
+<p>A bank transfer form. What's stopping a request from coming from outside?</p><span class="difficulty diff-medium">Medium</span></a></div>
+<div class="card"><a href="/csrf/bank2"><div class="level-num">Level 2</div><h3>Token Check</h3>
+<p>The developer added CSRF protection. But is it implemented correctly?</p><span class="difficulty diff-medium">Medium</span></a></div>
+</div>{% endblock %}

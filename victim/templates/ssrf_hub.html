@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/" class="back-link">← Back</a><h1>🔗 SSRF — Server-Side Request Forgery</h1>
+<p class="muted">A URL preview tool that fetches any URL you provide. What URLs can the SERVER reach that YOU can't?</p></div>
+<div class="card-grid">
+<div class="card"><a href="/ssrf/preview"><div class="level-num">Level 1</div><h3>Internal Access</h3>
+<p>Services running locally on the server aren't exposed to the internet. But the server can reach them.</p><span class="difficulty diff-medium">Medium</span></a></div>
+<div class="card"><a href="/ssrf/preview"><div class="level-num">Level 2</div><h3>Service Discovery</h3>
+<p>There's more than one internal service. Can you find them all?</p><span class="difficulty diff-hard">Hard</span></a></div>
+<div class="card"><a href="/ssrf/preview"><div class="level-num">Level 3</div><h3>Cloud Credentials</h3>
+<p>Cloud servers have a well-known metadata service. What IP address serves instance credentials?</p><span class="difficulty diff-hard">Hard</span></a></div>
+</div>{% endblock %}

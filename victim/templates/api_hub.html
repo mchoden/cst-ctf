@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block content %}
+<div class="lab-header"><a href="/" class="back-link">← Back</a><h1>🔍 API Security</h1>
+<p class="muted">The API documentation is at <code>GET /api-lab/docs</code>. But is it complete?</p></div>
+<div class="card-grid">
+<div class="card"><div class="level-num">Level 1</div><h3>Discovery</h3>
+<p>The docs list 3 endpoints. Are those really all of them?</p><span class="difficulty diff-medium">Medium</span>
+<details class="hint-box"><summary>Hint</summary><p>Developers often create endpoints for internal use — administration, debugging, monitoring. Try common path names.</p></details></div>
+<div class="card"><div class="level-num">Level 2</div><h3>Method Matters</h3>
+<p>An admin endpoint returns 403 Forbidden. Is it truly locked down?</p><span class="difficulty diff-medium">Medium</span>
+<details class="hint-box"><summary>Hint</summary><p>HTTP has many methods beyond GET and POST. Does the server block ALL of them?</p></details></div>
+<div class="card"><div class="level-num">Level 3</div><h3>Over-Sharing</h3>
+<p>The profile update API accepts your changes. All of them.</p>
+<p>Endpoint: <code>GET/PUT /api-lab/api/v1/profile</code></p><span class="difficulty diff-medium">Medium</span>
+<details class="hint-box"><summary>Hint</summary><p>Look at what fields your profile has. Are there any you shouldn't be able to change?</p></details></div>
+</div>{% endblock %}
