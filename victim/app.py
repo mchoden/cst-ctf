@@ -73,6 +73,10 @@ def init_db():
 def hub():
     return render_template("hub.html")
 
+@app.route("/fix")
+def fix_challenges():
+    return render_template("fix.html")
+
 # ═══════════════════════════════════════════════════════════════
 # LAB 1: CORS (3 flags)
 # ═══════════════════════════════════════════════════════════════
