@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Fix the Code{% endblock %}
+{% block content %}
+<div class="lab-header">
+    <a href="/" class="back-link">← Back</a>
+    <h1>🔧 Fix the Code</h1>
+    <p class="muted">You broke it. Now fix it. Open <code>victim/app.py</code> in your Codespace editor and patch the vulnerabilities.</p>
+    <p class="muted">After each fix, test that your attack no longer works. The server auto-reloads when you save.</p>
+</div>
+
+<div class="card-grid">
+
+    <div class="card">
+        <div class="level-num">Fix 1 — CORS</div>
+        <h3>Restrict the origin</h3>
+        <p>Find the <code>cors_l1</code> function. It sets <code>Access-Control-Allow-Origin: *</code></p>
+        <p><strong>Your task:</strong> Change it to only allow <code>http://localhost:5000</code></p>
+        <p><strong>Test:</strong></p>
+        <div class="code-block">
+# Before fix — should return data:
+curl -H "Origin: http://evil.com" http://localhost:5000/cors/api/public-profile
+
+# After fix — should NOT have Access-Control-Allow-Origin: * :
+curl -v -H "Origin: http://evil.com" http://localhost:5000/cors/api/public-profile 2>&1 | grep "Access-Control"</div>
+    </div>
+
+    <div class="card">
+        <div class="level-num">Fix 2 — CORS Regex</div>
+        <h3>Fix the origin check</h3>
+        <p>Find the <code>cors_l2</code> function. It uses <code>endswith("trusted-app.com")</code></p>
+        <p><strong>Your task:</strong> Fix the check so <code>evil-trusted-app.com</code> is rejected but <code>app.trusted-app.com</code> is still allowed.</p>
+        <p><strong>Test:</strong></p>
+        <div class="code-block">
+# Should be BLOCKED after fix:
+curl -H "Origin: https://evil-trusted-app.com" http://localhost:5000/cors/api/trusted-profile
+
+# Should still WORK after fix:
+curl -H "Origin: https://app.trusted-app.com" http://localhost:5000/cors/api/trusted-profile</div>
+    </div>
+
+    <div class="card">
+        <div class="level-num">Fix 3 — CSRF</div>
+        <h3>Validate the token properly</h3>
+        <p>Find the <code>csrf_bank2</code> function. It checks if <code>csrf_token</code> exists but not if it's correct.</p>
+        <p><strong>Your task:</strong> Add a check that compares the submitted token with <code>session["csrf_token"]</code></p>
+        <p><strong>Test:</strong></p>
+        <div class="code-block">
+# Should be BLOCKED after fix (fake token):
+curl -X POST http://localhost:5000/csrf/bank2 -d "csrf_token=fake&to=attacker&amount=500"
+
+# Should still work with the REAL token (get it from the page source)</div>
+    </div>
+
+    <div class="card">
+        <div class="level-num">Fix 4 — IDOR</div>
+        <h3>Add authorization</h3>
+        <p>Find the <code>auth_3_profile</code> function. It returns any user's data without checking who's asking.</p>
+        <p><strong>Your task:</strong> Add a check so users can only view their own profile (assume logged-in user is ID 3).</p>
+        <p><strong>Test:</strong></p>
+        <div class="code-block">
+# Should be BLOCKED after fix (not your ID):
+curl http://localhost:5000/auth/3/api/users/2
+
+# Should still WORK (your own ID):
+curl http://localhost:5000/auth/3/api/users/3</div>
+    </div>
+
+    <div class="card">
+        <div class="level-num">Fix 5 — API Verb Tampering</div>
+        <h3>Block ALL methods</h3>
+        <p>Find the <code>api_config_open</code> function. GET and POST return 403, but PUT/PATCH/DELETE don't.</p>
+        <p><strong>Your task:</strong> Make ALL methods return 403 on this endpoint.</p>
+        <p><strong>Test:</strong></p>
+        <div class="code-block">
+# ALL of these should return 403 after fix:
+curl http://localhost:5000/api-lab/api/v1/admin/config
+curl -X PUT http://localhost:5000/api-lab/api/v1/admin/config
+curl -X DELETE http://localhost:5000/api-lab/api/v1/admin/config</div>
+    </div>
+
+    <div class="card">
+        <div class="level-num">Fix 6 — Mass Assignment</div>
+        <h3>Whitelist allowed fields</h3>
+        <p>Find the <code>api_profile_update</code> function. It blindly saves ALL fields from the request.</p>
+        <p><strong>Your task:</strong> Only allow updating <code>email</code> and <code>phone</code>. Ignore everything else.</p>
+        <p><strong>Test:</strong></p>
+        <div class="code-block">
+# Should NOT change role after fix:
+curl -X PUT -H "Content-Type: application/json" \
+  -d '{"role":"admin"}' http://localhost:5000/api-lab/api/v1/profile
+
+# Should still update email:
+curl -X PUT -H "Content-Type: application/json" \
+  -d '{"email":"new@email.com"}' http://localhost:5000/api-lab/api/v1/profile</div>
+    </div>
+
+    <div class="card">
+        <div class="level-num">Fix 7 — SSRF</div>
+        <h3>Block internal URLs</h3>
+        <p>Find the <code>ssrf_preview</code> function. It fetches any URL without checking.</p>
+        <p><strong>Your task:</strong> Block requests to <code>localhost</code>, <code>127.0.0.1</code>, <code>10.*</code>, <code>172.16.*</code>, <code>192.168.*</code>, and <code>169.254.*</code></p>
+        <p><strong>Test:</strong></p>
+        <div class="code-block">
+# Should be BLOCKED after fix:
+curl -X POST http://localhost:5000/ssrf/preview \
+  -H "Content-Type: application/json" -d '{"url":"http://localhost:5002/admin"}'
+
+# Should still WORK (external URL):
+curl -X POST http://localhost:5000/ssrf/preview \
+  -H "Content-Type: application/json" -d '{"url":"https://example.com"}'</div>
+    </div>
+
+    <div class="card">
+        <div class="level-num">Fix 8 — Gateway</div>
+        <h3>Check auth on ALL methods</h3>
+        <p>Find the <code>micro_gateway_noauth</code> function. POST/PUT/PATCH/DELETE bypass the auth check.</p>
+        <p><strong>Your task:</strong> Apply the same <code>Authorization: Bearer admin-gateway-token</code> check to ALL methods.</p>
+        <p><strong>Test:</strong></p>
+        <div class="code-block">
+# Should be BLOCKED after fix (no token):
+curl -X POST http://localhost:5000/microservices/api/gateway/payment-service/process \
+  -H "Content-Type: application/json" -d '{"amount":100}'
+
+# Should work WITH token:
+curl -X POST http://localhost:5000/microservices/api/gateway/payment-service/process \
+  -H "Content-Type: application/json" -H "Authorization: Bearer admin-gateway-token" \
+  -d '{"amount":100}'</div>
+    </div>
+
+</div>
+{% endblock %}
